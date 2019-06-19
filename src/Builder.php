@@ -24,6 +24,7 @@ class Builder
      * @var string
      */
     protected $path;
+    protected $path_options;
 
     /**
      * Force set tags.
@@ -83,15 +84,17 @@ class Builder
 
     /**
      * Set current path.
-     * 
+     *
      * @param string $path
+     * @param $path_options
      * @return $this
      */
-    public function setPath(string $path = '')
+    public function setPath(string $path = '', $path_options = null)
     {
         $this->pathModel = null;
 
         $this->path = $path ?: request()->path();
+        $this->path_options = $path_options;
 
         return $this;
     }
@@ -177,7 +180,8 @@ class Builder
             if (! isset($this->pathModel)) { // Singleton
                 $modelClass = config('meta-tags.model', \Fomvasss\LaravelMetaTags\Models\MetaTag::class);
                 try {
-                    $this->pathModel = $modelClass::wherePath($this->path)->first() ?? 0;
+//                    $this->pathModel = $modelClass::wherePath($this->path)->first() ?? 0;
+                    $this->pathModel = $modelClass::getByPath($this->path, $this->path_options) ?? 0;
                 } catch (\Exception $e) {
                     //...
                 }

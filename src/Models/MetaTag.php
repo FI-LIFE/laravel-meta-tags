@@ -28,4 +28,9 @@ class MetaTag extends Model
     {
         return $query->where('path', $path);
     }
+
+    static public function getByPath($path, $path_options = null)
+    {
+        return static::query()->wherePath($path)->first();
+    }
 }
