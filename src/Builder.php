@@ -105,7 +105,10 @@ class Builder
      */
     public function setTags(array $tags = [])
     {
-        $this->tags = array_merge($this->tags, $tags);
+        foreach ($tags as $tag => $value) {
+            if ($value !== null)
+                $this->tags[$tag] = $value;
+        }
 
         return $this;
     }
